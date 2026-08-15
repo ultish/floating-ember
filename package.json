@@ -1,6 +1,6 @@
 {
   "name": "floating-ember",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Headless Ember tooltips and popovers, positioned with Floating UI.",
   "keywords": [
     "ember-addon",
