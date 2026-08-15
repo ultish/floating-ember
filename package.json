@@ -1,0 +1,147 @@
+{
+  "name": "floating-ember",
+  "version": "0.0.0",
+  "description": "Headless Ember tooltips and popovers, positioned with Floating UI.",
+  "keywords": [
+    "ember-addon",
+    "tooltip",
+    "popover",
+    "floating-ui",
+    "glimmer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ultish/floating-ember.git"
+  },
+  "homepage": "https://github.com/ultish/floating-ember#readme",
+  "bugs": {
+    "url": "https://github.com/ultish/floating-ember/issues"
+  },
+  "license": "MIT",
+  "author": "",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./addon-main.js": "./addon-main.cjs",
+    "./styles/floating.css": "./dist/styles/floating.css",
+    "./*.css": "./dist/*.css",
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  },
+  "files": [
+    "addon-main.cjs",
+    "declarations",
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "format": "prettier . --cache --write",
+    "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\" --prefixColors auto",
+    "lint:fix": "concurrently \"pnpm:lint:*:fix\" --names \"fix:\" --prefixColors auto && pnpm run format",
+    "lint:format": "prettier . --cache --check",
+    "lint:hbs": "ember-template-lint . --no-error-on-unmatched-pattern",
+    "lint:hbs:fix": "ember-template-lint . --fix --no-error-on-unmatched-pattern",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "lint:publish": "pnpm build && publint run --level error",
+    "lint:types": "ember-tsc --noEmit",
+    "prepack": "rollup --config",
+    "start": "vite dev",
+    "build:demo": "vite build --outDir dist-demo",
+    "test": "vite build --mode=development --out-dir dist-tests && testem --file testem.cjs ci --port 0"
+  },
+  "packageManager": "pnpm@10.0.0",
+  "dependencies": {
+    "@ember/test-waiters": "^4.1.1",
+    "@embroider/addon-shim": "^1.8.9",
+    "@floating-ui/dom": "^1.7.4",
+    "@glimmer/component": "^2.0.0",
+    "decorator-transforms": "^2.2.2",
+    "ember-modifier": "^4.2.2",
+    "focus-trap": "^7.6.5"
+  },
+  "peerDependencies": {
+    "@ember/test-helpers": ">= 4.0.0",
+    "ember-source": ">= 6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@ember/test-helpers": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
+    "@babel/plugin-transform-typescript": "^7.25.2",
+    "@babel/runtime": "^7.25.6",
+    "@ember/app-tsconfig": "^1.0.0",
+    "@ember/library-tsconfig": "^1.0.0",
+    "@ember/test-helpers": "^5.2.1",
+    "@ember/test-waiters": "^4.1.1",
+    "@embroider/addon-dev": "^8.1.0",
+    "@embroider/compat": "^4.1.0",
+    "@embroider/core": "^4.1.0",
+    "@embroider/macros": "^1.20.1",
+    "@embroider/vite": "^1.1.5",
+    "@eslint/js": "^9.17.0",
+    "@glint/ember-tsc": "^1.0.3",
+    "@glint/template": "^1.6.1",
+    "@glint/tsserver-plugin": "^2.0.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/qunit": "^2.19.12",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
+    "concurrently": "^9.0.1",
+    "daisyui": "^5.7.16",
+    "ember-page-title": "^9.0.3",
+    "ember-qunit": "^9.0.2",
+    "ember-source": "^6.7.0",
+    "ember-strict-application-resolver": "^0.1.0",
+    "ember-template-lint": "^7.9.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-ember": "^12.3.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^17.15.1",
+    "globals": "^16.1.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-ember-template-tag": "^2.0.4",
+    "publint": "^0.3.16",
+    "qunit": "^2.24.1",
+    "qunit-dom": "^3.4.0",
+    "rollup": "^4.22.5",
+    "rollup-plugin-copy": "^3.5.0",
+    "tailwindcss": "^4.3.3",
+    "testem": "^3.15.1",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.19.1",
+    "vite": "^7.1.9"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
+    "app-js": {
+      "./components/popover.js": "./dist/_app_/components/popover.js",
+      "./components/tooltip-group.js": "./dist/_app_/components/tooltip-group.js",
+      "./components/tooltip.js": "./dist/_app_/components/tooltip.js",
+      "./modifiers/tooltip.js": "./dist/_app_/modifiers/tooltip.js"
+    }
+  }
+}

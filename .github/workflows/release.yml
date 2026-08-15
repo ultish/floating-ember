@@ -1,0 +1,88 @@
+# Publish floating-ember to npm when a version tag is pushed.
+#
+# Auth: npm Trusted Publishing (OIDC) — no NPM_TOKEN, no OTP in CI.
+#
+# One-time on npmjs.com (package Settings → Trusted Publisher → GitHub Actions):
+#   Organization or user:  ultish
+#   Repository:            floating-ember
+#   Workflow filename:     release.yml
+#   Allowed actions:       npm publish
+#
+# Release: bump package.json version, commit, then:
+#   git tag vX.Y.Z && git push origin vX.Y.Z
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Pack only — do not publish to npm'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish floating-ember
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+      - name: Ensure modern npm (OIDC trusted publishing)
+        run: npm install -g npm@latest
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify tag matches package.json version
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          echo "tag=$TAG package.json=$PKG"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Tag v$TAG does not match package.json version $PKG"
+            exit 1
+          fi
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
+      - name: Build addon
+        run: pnpm build
+      - name: Pack (inspect contents)
+        run: |
+          set -euo pipefail
+          pnpm pack
+          echo "--- tarball contents (first 80 entries) ---"
+          tar -tzf floating-ember-*.tgz | head -80
+      - name: Publish to npm (OIDC trusted publishing)
+        if: >-
+          github.event_name == 'push' ||
+          (github.event_name == 'workflow_dispatch' && inputs.dry_run == false)
+        run: |
+          set -euo pipefail
+          echo "npm $(npm --version) node $(node --version)"
+          npm publish --access public
+      - name: Dry-run notice
+        if: github.event_name == 'workflow_dispatch' && inputs.dry_run != false
+        run: echo "Dry run complete — tarball built, nothing published."

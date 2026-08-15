@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@import '../src/styles/floating.css';
+
+:root {
+  --cookbook-sticky-offset: 5.5rem;
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --cookbook-sticky-offset: 7.5rem;
+  }
+}
+
+html {
+  scroll-padding-top: var(--cookbook-sticky-offset);
+  scroll-behavior: smooth;
+}
+
+@plugin 'daisyui' {
+  themes:
+    light --default,
+    dark,
+    cupcake,
+    forest,
+    nord,
+    business,
+    dracula,
+    lemonade;
+}
+
+@source "./**/*.{gts,gjs,ts,js}";
+
+/*
+ * Headless default: no visual theme. This outline is only for the
+ * cookbook so you can see the floating node at all.
+ */
+.cookbook-unstyled[role='tooltip'],
+.cookbook-unstyled[role='dialog'] {
+  outline: 1px dashed currentColor;
+  padding: 0.25rem 0.4rem;
+  background: transparent;
+}
+
+:root {
+  --floating-panel-border: color-mix(
+    in oklab,
+    var(--color-base-content) 20%,
+    transparent
+  );
+}
+
+.floating-panel {
+  border: 1px solid var(--floating-panel-border);
+}
+
+/*
+ * The arrow is an SVG triangle. `fill`/`stroke` are inherited SVG
+ * properties, so setting them once here reaches the arrow's child paths
+ * automatically — and since they're plain CSS (no JS), swapping DaisyUI
+ * themes (light/dark/...) restyles the arrow with zero re-render. Pass
+ * `@arrowStrokeWidth={{1}}` on the Popover so the stroke geometry matches
+ * this 1px border.
+ */
+[role='dialog'][data-state] [data-floating-arrow] {
+  fill: var(--color-base-100);
+  stroke: var(--floating-panel-border);
+}
+
+/* Plain CSS example — not Tailwind, not Daisy. You write this. */
+.tip-plain {
+  background: #1c1915;
+  fill: #1c1915;
+  color: #f4efe4;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  max-width: 16rem;
+}
