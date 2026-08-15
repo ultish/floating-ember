@@ -29,6 +29,7 @@ const TOC = [
   { id: 'group', label: 'Delay group' },
   { id: 'controlled', label: 'Controlled' },
   { id: 'popover', label: 'Popover' },
+  { id: 'popover-modal', label: 'Modal' },
   { id: 'popover-options', label: 'Popover options' },
   { id: 'styling', label: 'Styling' },
   { id: 'args', label: 'Args reference' },
@@ -181,12 +182,6 @@ export default class Cookbook extends Component {
   max-width: 16rem;
 }
 
-/* Position, z-index, and pointer-events are set inline by the addon
-   either way — this import isn't needed for that. It only matters if
-   you use <Popover @modal={{true}}>, to style the dimmed backdrop
-   (data-floating-scrim). Skip it for tooltip-only apps like this one. */
-@import 'floating-ember/styles/floating.css';
-
 <button type="button" {{tooltip "Save your changes" arrow=true contentClass="tip"}}>
   Save
 </button>
@@ -283,6 +278,24 @@ export default class Cookbook extends Component {
 </Popover>
 
 // Click to open. Interactive content is allowed. Focus is trapped.`;
+
+  recipeModal = `/* app.css — the only stylesheet the addon ships.
+   Position and z-index are already inline. Import this for the
+   dimmed backdrop (data-floating-scrim) when @modal is set. */
+@import 'floating-ember/styles/floating.css';
+
+<Popover @modal={{true}} @contentClass="panel">
+  <:trigger as |trigger|>
+    <button type="button" {{trigger}}>Open</button>
+  </:trigger>
+  <:content>
+    Focus is locked here until you dismiss.
+    <button type="button">Confirm</button>
+  </:content>
+</Popover>
+
+// Escape, the scrim, and click-outside all close. Skip the import
+// if you never use @modal — or style [data-floating-scrim] yourself.`;
 
   recipePopoverOptions = `<Popover
   @placement={{this.placement}}
@@ -405,6 +418,10 @@ export default class Cookbook extends Component {
             node with position, delay, and ARIA. A popover is a
             <code class="text-sm">role="dialog"</code>
             with click, focus trap, and click-outside.
+            <code class="text-sm">@modal</code>
+            adds a scrim — the only paint the addon ships, in an optional
+            <a href="#popover-modal" class="link"><code
+              >floating-ember/styles/floating.css</code></a>.
           </p>
           <p class="text-base leading-relaxed opacity-80">
             Every example below
@@ -667,9 +684,26 @@ export default class Cookbook extends Component {
         </CookbookSection>
 
         <CookbookSection
+          @id="popover-modal"
+          @title="Modal popover"
+          @blurb="Scrim + focus lock. The dimmed backdrop is the only visual the addon ships — import floating-ember/styles/floating.css, or paint [data-floating-scrim] yourself."
+          @code={{this.recipeModal}}
+        >
+          <Popover @modal={{true}} @contentClass="panel">
+            <:trigger as |trigger|>
+              <button type="button" class="btn btn-sm" {{trigger}}>Open modal</button>
+            </:trigger>
+            <:content>
+              <p class="text-sm">Focus stays in this dialog.</p>
+              <button type="button" class="btn btn-xs mt-2">Confirm</button>
+            </:content>
+          </Popover>
+        </CookbookSection>
+
+        <CookbookSection
           @id="popover-options"
           @title="Popover options"
-          @blurb="modal adds a scrim. Placement is the same Floating UI set."
+          @blurb="Toggle modal on this one to compare. Placement is the same Floating UI set."
           @code={{this.recipePopoverOptions}}
         >
           <div class="flex flex-wrap items-end gap-3">
@@ -744,7 +778,10 @@ export default class Cookbook extends Component {
               <code>fill</code>/<code>stroke</code>
               on
               <code>[data-floating-arrow]</code>
-              are all it takes to match.
+              are all it takes to match. The optional
+              <code>floating-ember/styles/floating.css</code>
+              import is only for
+              <a href="#popover-modal" class="link">modal</a>'s scrim.
             </p>
             <ul class="text-sm opacity-70 list-disc ps-5 space-y-1">
               <li>
