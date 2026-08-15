@@ -121,6 +121,10 @@ import { openTooltip, openPopover } from 'floating-ember/test-support';
 
 Ember 6+. Integration tests run in Chrome and Firefox.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
 ## License
 
 MIT

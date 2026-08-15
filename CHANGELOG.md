@@ -1,0 +1,37 @@
+# Changelog
+
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.1.2] — 2026-08-15
+
+First release published from GitHub Actions via npm trusted publishing (OIDC).
+
+### Fixed
+
+- Release workflow no longer fails after `pnpm pack` when `tar | head` hits `SIGPIPE` under `pipefail`.
+
+`0.1.1` was tagged to test that pipeline and never reached the registry.
+
+## [0.1.0] — 2026-08-15
+
+Initial release.
+
+### Added
+
+- `<Tooltip>` and `{{tooltip}}` — hover/focus, `role="tooltip"`, non-interactive content
+- `<Popover>` — click to open, `role="dialog"`, focus trap, click-outside, optional `@modal` scrim
+- `<TooltipGroup>` — shared hover delay across a toolbar
+- SVG pointer arrow (`@arrow` / `arrow=true`) with `arrowWidth`, `arrowHeight`, `arrowTipRadius`, `arrowStrokeWidth`
+- Positioning via `@floating-ui/dom` (`offset`, `flip`, `shift`, `hide`)
+- Named blocks `<:trigger>` / `<:content>`; tagless (no wrapper around the trigger)
+- Portal to `document.body` (`@container`, `@renderInPlace`)
+- Controlled mode (`@open` / `@onOpenChange`)
+- Headless styling via `contentClass`; optional `floating-ember/styles/floating.css` for the modal scrim only
+- Published TypeScript declarations for GTS consumers
+- Test helpers: `openTooltip`, `closeTooltip`, `openPopover`, `closePopover`
+- Ember 6+; CI on Chrome and Firefox, plus embroider-try scenarios
+
+[0.1.2]: https://github.com/ultish/floating-ember/releases/tag/v0.1.2
