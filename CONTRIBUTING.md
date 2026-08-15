@@ -17,8 +17,7 @@
 
 ## Running tests
 
-- `pnpm test` – Runs the test suite on the current Ember version
-- `pnpm test:watch` – Runs the test suite in "watch mode"
+- `pnpm test` – Builds and runs the test suite (Chrome; also Firefox in CI)
 
 ## Running the test application
 

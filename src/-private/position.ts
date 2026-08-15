@@ -8,7 +8,10 @@ import {
   shift,
 } from '@floating-ui/dom';
 import { buildWaiter } from '@ember/test-waiters';
-import { arrowRotationForSide, isHorizontalEdgeSide } from './arrow-geometry.ts';
+import {
+  arrowRotationForSide,
+  isHorizontalEdgeSide,
+} from './arrow-geometry.ts';
 import type { Middleware, Placement } from '@floating-ui/dom';
 
 const waiter = buildWaiter('floating-ember:position');

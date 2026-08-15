@@ -22,7 +22,7 @@ export default class CookbookSection extends Component<CookbookSectionSignature>
   <template>
     <section
       id={{@id}}
-      class="space-y-3 border-b border-base-300 pb-10 last:border-b-0 [scroll-margin-top:var(--cookbook-sticky-offset)]"
+      class="space-y-3 border-b border-base-300 pb-10 last:border-b-0 scroll-mt-(--cookbook-sticky-offset)"
       ...attributes
     >
       <header class="space-y-1">

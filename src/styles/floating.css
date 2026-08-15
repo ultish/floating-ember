@@ -1,5 +1,5 @@
-[role='tooltip'],
-[role='dialog'][data-state] {
+[role="tooltip"],
+[role="dialog"][data-state] {
   position: absolute;
   z-index: 10000;
   width: max-content;
@@ -8,7 +8,7 @@
   overflow: visible;
 }
 
-[role='tooltip'] {
+[role="tooltip"] {
   pointer-events: none;
 }
 

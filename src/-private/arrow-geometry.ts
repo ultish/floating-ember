@@ -30,9 +30,7 @@ export interface ArrowGeometry {
   clipHeight: number;
 }
 
-export function computeArrowGeometry(
-  input: ArrowGeometryInput,
-): ArrowGeometry {
+export function computeArrowGeometry(input: ArrowGeometryInput): ArrowGeometry {
   const { width, height, tipRadius, strokeWidth } = input;
   // Strokes are doubled and centered on the path so half the stroke extends
   // outward past the flat edge, overlapping the panel's own border.

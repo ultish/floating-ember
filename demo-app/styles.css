@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import '../src/styles/floating.css';
+@import "tailwindcss";
+@import "../src/styles/floating.css";
 
 :root {
   --cookbook-sticky-offset: 5.5rem;
@@ -34,8 +34,8 @@ html {
  * Headless default: no visual theme. This outline is only for the
  * cookbook so you can see the floating node at all.
  */
-.cookbook-unstyled[role='tooltip'],
-.cookbook-unstyled[role='dialog'] {
+.cookbook-unstyled[role="tooltip"],
+.cookbook-unstyled[role="dialog"] {
   outline: 1px dashed currentColor;
   padding: 0.25rem 0.4rem;
   background: transparent;
@@ -54,20 +54,55 @@ html {
 }
 
 /*
+ * Landing page only. Content portals to document.body, so we mark
+ * <html> from the home template and style the roles the addon already
+ * sets. Cookbook examples keep their own contentClass.
+ */
+html[data-landing] main section button {
+  @apply btn btn-sm;
+}
+
+html[data-landing] main section button + button {
+  margin-inline-start: 0.5rem;
+}
+
+html[data-landing] [role="tooltip"] {
+  @apply rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow;
+  max-width: 16rem;
+}
+
+html[data-landing] [role="dialog"][data-state] {
+  @apply card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible space-y-2;
+  fill: var(--color-base-100);
+  stroke: var(--floating-panel-border);
+  border: 1px solid var(--floating-panel-border);
+}
+
+html[data-landing] [role="dialog"][data-state] a {
+  @apply link link-primary text-sm;
+}
+
+html[data-landing] [role="dialog"][data-state] button {
+  @apply btn btn-xs btn-ghost;
+}
+
+/*
  * The arrow is an SVG triangle. `fill`/`stroke` are inherited SVG
  * properties, so setting them once here reaches the arrow's child paths
  * automatically — and since they're plain CSS (no JS), swapping DaisyUI
  * themes (light/dark/...) restyles the arrow with zero re-render. Pass
  * `@arrowStrokeWidth={{1}}` on the Popover so the stroke geometry matches
- * this 1px border.
+ * this 1px border. Scoped to .floating-panel (not every [role="dialog"])
+ * so the plain-CSS .panel example below stays independent of DaisyUI's
+ * theme variables.
  */
-[role='dialog'][data-state] [data-floating-arrow] {
+.floating-panel [data-floating-arrow] {
   fill: var(--color-base-100);
   stroke: var(--floating-panel-border);
 }
 
-/* Plain CSS example — not Tailwind, not Daisy. You write this. */
-.tip-plain {
+/* Plain CSS examples — not Tailwind, not Daisy. You write these. */
+.tip {
   background: #1c1915;
   fill: #1c1915;
   color: #f4efe4;
@@ -76,4 +111,16 @@ html {
   padding: 0.4rem 0.65rem;
   border-radius: 4px;
   max-width: 16rem;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  fill: #fff; /* arrow color — matches the panel's own background */
+  stroke: #ddd; /* arrow border — matches the panel's own border */
+  color: #1c1915;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  padding: 1rem;
+  width: 14rem;
 }

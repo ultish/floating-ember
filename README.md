@@ -2,7 +2,6 @@
 
 Headless tooltips and popovers for Ember 6+, positioned with [`@floating-ui/dom`](https://floating-ui.com).
 
-Tooltips describe. Popovers contain. They share a positioner, not an interaction model.
 
 - **Tooltip** — hover + focus, rich but non-interactive text
 - **Popover** — click to open, interactive content
@@ -73,7 +72,7 @@ import Popover from 'floating-ember/components/popover';
 | API | Purpose |
 |---|---|
 | `<TooltipGroup>` | Shared hover delay across a toolbar |
-| `@arrow` / `arrow=true` | Attachment arrow toward the trigger. Inherits the floating node's background. |
+| `@arrow` / `arrow=true` | SVG pointer arrow toward the trigger — see Styling below |
 | `@renderInPlace` | Skip the portal |
 | `@modal` on `<Popover>` | Scrim + focus lock |
 | `@open` / `@onOpenChange` | Controlled mode |
@@ -86,9 +85,11 @@ The addon is headless. Pass `contentClass` (or wrap markup in `:content`).
 
 - **Plain CSS** — your class, your colors
 - **Tailwind** (optional) — utilities on `contentClass`. Not a dependency.
-- **DaisyUI** (optional) — `bg-base-content text-base-100` (inverted against the page). `neutral` barely changes between light and dark. Not a dependency.
+- **DaisyUI** (optional) — `bg-base-content text-base-100` (inverted against the page, so it stays readable across themes). Not a dependency.
 
-Optional structural sheet (arrow, z-index, portal only):
+Position, z-index, and pointer-events are set inline by the addon regardless
+of CSS. The one thing that genuinely needs this stylesheet is `<Popover
+@modal={{true}}>`'s dimmed backdrop — skip the import if you don't use that:
 
 ```css
 @import 'floating-ember/styles/floating.css';
@@ -96,7 +97,12 @@ Optional structural sheet (arrow, z-index, portal only):
 
 The cookbook at the demo app has a **Styling** section with live recipes for all three.
 
-Popovers typically want a light border and a normal `box-shadow`. Do not put a CSS `border` on the arrow — under `border-box` that shrinks the fill and the caret sits on the panel stroke. Match the fill, then draw the two outer edges with `box-shadow` (see the cookbook). A borderless tooltip should stay fill-only or it picks up `currentcolor` (white lines on a dark chip).
+The arrow is an SVG triangle, not a CSS-rotated square — `fill` and `stroke`
+are inherited SVG properties, so setting them once on the panel's class (or
+directly on `[data-floating-arrow]`) reaches the arrow automatically. If the
+panel has a `border`, pass `@arrowStrokeWidth` matching its px width so the
+arrow's stroke geometry accounts for it — otherwise the arrow won't sit
+flush with the border.
 
 ## Accessibility
 

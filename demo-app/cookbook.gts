@@ -166,8 +166,8 @@ export default class Cookbook extends Component {
   Save
 </button>
 
-// No class. No CSS import. The addon draws a role="tooltip"
-// node and positions it. Visual style is yours.`;
+// The addon draws a role="tooltip" node and positions it.
+// Visual style is yours.`;
 
   recipePlain = `/* app.css — you write this. The addon does not ship a theme. */
 .tip {
@@ -181,7 +181,10 @@ export default class Cookbook extends Component {
   max-width: 16rem;
 }
 
-/* optional: structural rules only (arrow z-index, portal) */
+/* Position, z-index, and pointer-events are set inline by the addon
+   either way — this import isn't needed for that. It only matters if
+   you use <Popover @modal={{true}}>, to style the dimmed backdrop
+   (data-floating-scrim). Skip it for tooltip-only apps like this one. */
 @import 'floating-ember/styles/floating.css';
 
 <button type="button" {{tooltip "Save your changes" arrow=true contentClass="tip"}}>
@@ -189,21 +192,32 @@ export default class Cookbook extends Component {
 </button>
 
 // fill is an inherited SVG property, so setting it once on .tip reaches
-// the arrow automatically. Do not set overflow: hidden on .tip or the
-// arrow is clipped.`;
+// the arrow automatically — no import needed for that either. Do not
+// set overflow: hidden on .tip or the arrow is clipped.`;
 
   recipeModifier = `import tooltip from 'floating-ember/modifiers/tooltip';
 
+/* app.css — plain CSS, no build step */
+.tip {
+  background: #1c1915;
+  fill: #1c1915; /* arrow color */
+  color: #f4efe4;
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+}
+
 <button
   type="button"
-  {{tooltip "Save your changes" placement="top" delay=200 arrow=true contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow"}}
+  {{tooltip "Save your changes" placement="top" delay=200 arrow=true contentClass="tip"}}
 >
   Save
-</button>`;
+</button>
+
+// No wrapper component — the modifier attaches directly to your element.`;
 
   recipeNamed = `import Tooltip from 'floating-ember/components/tooltip';
 
-<Tooltip @placement="top" @arrow={{true}} @contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow">
+<Tooltip @placement="top" @arrow={{true}} @contentClass="tip">
   <:trigger as |trigger|>
     <button type="button" {{trigger}}>Commit</button>
   </:trigger>
@@ -223,7 +237,7 @@ export default class Cookbook extends Component {
   @closeDelay={{this.closeDelay}}
   @arrow={{this.arrow}}
   @disabled={{this.disabled}}
-  @contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow"
+  @contentClass="tip"
 >
   <:trigger as |trigger|>
     <button type="button" {{trigger}}>Hover me</button>
@@ -234,13 +248,13 @@ export default class Cookbook extends Component {
   recipeGroup = `import TooltipGroup from 'floating-ember/components/tooltip-group';
 
 <TooltipGroup>
-  <Tooltip @contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow">
+  <Tooltip @contentClass="tip">
     <:trigger as |trigger|>
       <button type="button" {{trigger}}>Cut</button>
     </:trigger>
     <:content>Cut selection</:content>
   </Tooltip>
-  <Tooltip @contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow">…</Tooltip>
+  <Tooltip @contentClass="tip">…</Tooltip>
 </TooltipGroup>
 
 // First tooltip waits @delay. The next one in the group opens instantly.`;
@@ -248,7 +262,7 @@ export default class Cookbook extends Component {
   recipeControlled = `<Tooltip
   @open={{this.open}}
   @onOpenChange={{this.onOpenChange}}
-  @contentClass="rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow"
+  @contentClass="tip"
 >
   <:trigger as |trigger|>
     <button type="button" {{trigger}}>Target</button>
@@ -273,6 +287,7 @@ export default class Cookbook extends Component {
   recipePopoverOptions = `<Popover
   @placement={{this.placement}}
   @arrow={{this.arrow}}
+  @arrowStrokeWidth={{1}}
   @modal={{this.modal}}
   @contentClass="panel"
 >
@@ -280,7 +295,10 @@ export default class Cookbook extends Component {
     <button type="button" {{trigger}}>Open</button>
   </:trigger>
   <:content>…</:content>
-</Popover>`;
+</Popover>
+
+// @arrowStrokeWidth matches "panel"'s 1px border — omit it (or set 0)
+// for a borderless panel, otherwise the arrow won't sit flush.`;
 
   recipeTailwind = `// In YOUR app — not a floating-ember dependency
 // app.css
@@ -327,6 +345,7 @@ export default class Cookbook extends Component {
 
 <Popover
   @arrow={{true}}
+  @arrowStrokeWidth={{1}}
   @contentClass="floating-panel card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible"
 >
   <:trigger as |trigger|>
@@ -442,7 +461,7 @@ export default class Cookbook extends Component {
               placement="top"
               delay=200
               arrow=true
-              contentClass=this.tipClass
+              contentClass="tip"
             }}
           >
             Save
@@ -455,11 +474,7 @@ export default class Cookbook extends Component {
           @blurb="Use <:content> for line breaks and bold. Links and buttons belong in Popover."
           @code={{this.recipeNamed}}
         >
-          <Tooltip
-          @placement="top"
-          @arrow={{true}}
-          @contentClass={{this.tipClass}}
-        >
+          <Tooltip @placement="top" @arrow={{true}} @contentClass="tip">
             <:trigger as |trigger|>
               <button
                 type="button"
@@ -543,7 +558,7 @@ export default class Cookbook extends Component {
             @closeDelay={{this.closeDelay}}
             @arrow={{this.arrow}}
             @disabled={{this.disabled}}
-            @contentClass={{this.tipClass}}
+            @contentClass="tip"
           >
             <:trigger as |trigger|>
               <button type="button" class="btn btn-sm" {{trigger}}>Hover me</button>
@@ -564,7 +579,7 @@ export default class Cookbook extends Component {
         >
           <TooltipGroup>
             <div class="flex gap-2">
-              <Tooltip @delay={{200}} @contentClass={{this.tipClass}}>
+              <Tooltip @delay={{200}} @contentClass="tip">
                 <:trigger as |trigger|>
                   <button
                     type="button"
@@ -574,7 +589,7 @@ export default class Cookbook extends Component {
                 </:trigger>
                 <:content>Cut selection</:content>
               </Tooltip>
-              <Tooltip @delay={{200}} @contentClass={{this.tipClass}}>
+              <Tooltip @delay={{200}} @contentClass="tip">
                 <:trigger as |trigger|>
                   <button
                     type="button"
@@ -584,7 +599,7 @@ export default class Cookbook extends Component {
                 </:trigger>
                 <:content>Copy selection</:content>
               </Tooltip>
-              <Tooltip @delay={{200}} @contentClass={{this.tipClass}}>
+              <Tooltip @delay={{200}} @contentClass="tip">
                 <:trigger as |trigger|>
                   <button
                     type="button"
@@ -615,7 +630,7 @@ export default class Cookbook extends Component {
             <Tooltip
               @open={{this.controlledOpen}}
               @onOpenChange={{this.onOpenChange}}
-              @contentClass={{this.tipClass}}
+              @contentClass="tip"
             >
               <:trigger as |trigger|>
                 <button
@@ -636,11 +651,7 @@ export default class Cookbook extends Component {
           @blurb="Click to toggle. Links and buttons are allowed. Escape and click-outside close."
           @code={{this.recipePopover}}
         >
-          <Popover
-            @placement="bottom-start"
-            @contentClass={{this.panelClass}}
-            @arrowStrokeWidth={{1}}
-          >
+          <Popover @placement="bottom-start" @contentClass="panel">
             <:trigger as |trigger|>
               <button type="button" class="btn btn-sm" {{trigger}}>More</button>
             </:trigger>
@@ -700,7 +711,7 @@ export default class Cookbook extends Component {
             @arrow={{this.popoverArrow}}
             @arrowStrokeWidth={{1}}
             @modal={{this.modal}}
-            @contentClass={{this.panelClass}}
+            @contentClass="panel"
           >
             <:trigger as |trigger|>
               <button type="button" class="btn btn-sm" {{trigger}}>Open</button>
@@ -726,8 +737,8 @@ export default class Cookbook extends Component {
               <code>contentClass</code>
               (or your own markup inside
               <code>:content</code>). The addon never requires a CSS framework.
-              Pick one of the three recipes below. Popovers use a light
-              border; the arrow is an SVG triangle, so
+              Pick one of the three recipes below. Popovers use a light border;
+              the arrow is an SVG triangle, so
               <code>@arrowStrokeWidth</code>
               (matching the border's px width) and CSS
               <code>fill</code>/<code>stroke</code>
@@ -761,11 +772,7 @@ export default class Cookbook extends Component {
             <button
               type="button"
               class="btn btn-sm"
-              {{tooltip
-                "Save your changes"
-                arrow=true
-                contentClass="tip-plain"
-              }}
+              {{tooltip "Save your changes" arrow=true contentClass="tip"}}
             >
               Save
             </button>
@@ -912,7 +919,8 @@ export default class Cookbook extends Component {
                     <code>data-floating-arrow</code></td>
                 </tr>
                 <tr>
-                  <td><code>arrowWidth</code> /
+                  <td><code>arrowWidth</code>
+                    /
                     <code>arrowHeight</code></td>
                   <td>both</td>
                   <td>14 / 7</td>
