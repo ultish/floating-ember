@@ -74,7 +74,7 @@ jobs:
           set -euo pipefail
           pnpm pack
           echo "--- tarball contents (first 80 entries) ---"
-          tar -tzf floating-ember-*.tgz | head -80
+          tar -tzf floating-ember-*.tgz | head -80 || true
       - name: Publish to npm (OIDC trusted publishing)
         if: >-
           github.event_name == 'push' ||
