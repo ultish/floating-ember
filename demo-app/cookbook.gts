@@ -28,6 +28,7 @@ const TOC = [
   { id: 'options', label: 'Tooltip options' },
   { id: 'group', label: 'Delay group' },
   { id: 'controlled', label: 'Controlled' },
+  { id: 'positioned', label: 'Sticky & absolute' },
   { id: 'popover', label: 'Popover' },
   { id: 'popover-modal', label: 'Modal' },
   { id: 'popover-options', label: 'Popover options' },
@@ -265,6 +266,33 @@ export default class Cookbook extends Component {
   <:content>Open state lives in the parent</:content>
 </Tooltip>`;
 
+  recipePositioned = `// Sticky at the top of its parent. top offsets the cookbook header
+// so the bar sits under the nav, then leaves when the parent ends.
+
+<div class="parent">
+  <div class="sticky top-(--cookbook-sticky-offset) z-10">
+    <button
+      type="button"
+      {{tooltip "Stays on the bar" arrow=true contentClass="tip"}}
+    >
+      Sticky
+    </button>
+  </div>
+  <div class="min-h-[120vh]">rest of parent</div>
+</div>
+
+// Absolute. Same modifier.
+
+<div class="relative h-40">
+  <button
+    type="button"
+    class="absolute right-6 top-8"
+    {{tooltip "Absolutely positioned" arrow=true contentClass="tip"}}
+  >
+    Absolute
+  </button>
+</div>`;
+
   recipePopover = `import Popover from 'floating-ember/components/popover';
 
 <Popover @placement="bottom-start" @contentClass="panel">
@@ -381,7 +409,12 @@ export default class Cookbook extends Component {
         >
           <div>
             <p
-              class="text-xs font-medium uppercase tracking-wider opacity-50"
+              class="text-xs font-medium uppercase tracking-wider opacity-50 cursor-help"
+              {{tooltip
+                "This header is position: sticky. Scroll the page — I should stay on this label."
+                arrow=true
+                contentClass="tip"
+              }}
             >Cookbook</p>
             <LinkTo
               @route="index"
@@ -659,6 +692,92 @@ export default class Cookbook extends Component {
               <:content>Parent owns open =
                 {{if this.controlledOpen "true" "false"}}</:content>
             </Tooltip>
+          </div>
+        </CookbookSection>
+
+        <CookbookSection
+          @id="positioned"
+          @title="Sticky and absolute triggers"
+          @blurb="The live tips stay open so you can scroll. The sticky bar starts at the top of its parent, pins under the cookbook header as you scroll, and leaves when that parent ends."
+          @code={{this.recipePositioned}}
+        >
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <p
+                class="text-xs font-medium uppercase tracking-wide opacity-50"
+              >Sticky under the nav</p>
+              <p class="text-xs opacity-60 leading-relaxed">
+                Scroll the page. The bar sits under the header (<code>top:
+                  var(--cookbook-sticky-offset)</code>), then comes off once you
+                pass the blue parent.
+              </p>
+              <div
+                class="overflow-visible rounded-box border border-base-300 bg-primary/10"
+              >
+                <Tooltip
+                  @open={{true}}
+                  @arrow={{true}}
+                  @contentClass="tip"
+                  @placement="bottom"
+                >
+                  <:trigger as |trigger|>
+                    <div
+                      class="sticky top-(--cookbook-sticky-offset) z-10 flex items-center gap-3 border-b border-primary/20 bg-primary px-3 py-2 text-primary-content"
+                      {{trigger}}
+                    >
+                      <span class="text-sm font-medium">Sticky</span>
+                      <span class="text-xs opacity-80">
+                        top of parent — sticks under the header
+                      </span>
+                    </div>
+                  </:trigger>
+                  <:content>Under the nav, then gone</:content>
+                </Tooltip>
+                <div
+                  class="min-h-[140vh] space-y-32 px-3 py-6 text-xs opacity-60"
+                >
+                  <p>still inside the parent</p>
+                  <p>keep scrolling — the bar should stay under the nav</p>
+                  <p>parent is about to end</p>
+                </div>
+              </div>
+              <p class="rounded-box bg-base-200 px-3 py-6 text-xs opacity-50">
+                past the parent — the sticky bar should have left
+              </p>
+            </div>
+
+            <div class="space-y-2">
+              <p
+                class="text-xs font-medium uppercase tracking-wide opacity-50"
+              >Absolute</p>
+              <p class="text-xs opacity-60 leading-relaxed">
+                The button is
+                <code>position: absolute</code>
+                inside this box.
+              </p>
+              <div
+                class="relative h-40 rounded-box border border-dashed border-base-300 bg-base-200"
+              >
+                <span
+                  class="absolute bottom-2 left-3 text-xs opacity-50"
+                >relative parent</span>
+                <Tooltip
+                  @open={{true}}
+                  @arrow={{true}}
+                  @contentClass="tip"
+                  @placement="top"
+                >
+                  <:trigger as |trigger|>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-secondary absolute right-6 top-8"
+                      {{trigger}}
+                    >Absolute</button>
+                  </:trigger>
+                  <:content>Absolutely positioned</:content>
+                </Tooltip>
+              </div>
+            </div>
           </div>
         </CookbookSection>
 
