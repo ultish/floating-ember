@@ -90,7 +90,7 @@ export default class Cookbook extends Component {
   tipClass =
     'rounded-box bg-base-content fill-base-content px-2 py-1 text-xs text-base-100 shadow';
   panelClass =
-    'floating-panel card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible space-y-2';
+    'card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible space-y-2 border border-base-content/20 fill-base-100 stroke-base-content/20';
 
   @tracked daisyTheme: DaisyTheme = readTheme();
   @tracked placement: Placement = 'top';
@@ -452,28 +452,10 @@ import Popover from 'floating-ember/components/popover';
   Save
 </button>
 
-/* One DaisyUI-derived variable feeds both the panel's border and the
-   arrow's stroke — same idea as the plain-CSS .panel above, just sourced
-   from a theme token instead of a literal so it restyles with the theme. */
-:root {
-  --floating-panel-border: color-mix(
-    in oklab,
-    var(--color-base-content) 20%,
-    transparent
-  );
-}
-.floating-panel {
-  border: 1px solid var(--floating-panel-border);
-}
-.floating-panel [data-floating-arrow] {
-  fill: var(--color-base-100);
-  stroke: var(--floating-panel-border);
-}
-
 <Popover
   @arrow={{true}}
   @arrowStrokeWidth={{1}}
-  @contentClass="floating-panel card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible"
+  @contentClass="card bg-base-100 text-base-content shadow-lg p-4 w-56 overflow-visible border border-base-content/20 fill-base-100 stroke-base-content/20"
 >
   <:trigger as |trigger|>
     <button type="button" class="btn btn-sm" {{trigger}}>Menu</button>
@@ -483,6 +465,9 @@ import Popover from 'floating-ember/components/popover';
   </:content>
 </Popover>
 
+// border-base-content/20 and stroke-base-content/20 share one token (and
+// opacity), so they can't drift — same for bg-base-100/fill-base-100. No
+// custom variable needed, same idea as the Tailwind recipe above.
 // Switch data-theme on <html> — base-300 / base-content follow it.`;
 
   <template>
