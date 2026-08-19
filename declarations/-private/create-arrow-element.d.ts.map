@@ -1,0 +1,1 @@
+{"version":3,"file":"create-arrow-element.d.ts","sourceRoot":"","sources":["../../src/-private/create-arrow-element.ts"],"names":[],"mappings":"AAMA,MAAM,WAAW,yBAAyB;IACxC,KAAK,CAAC,EAAE,MAAM,CAAC;IACf,MAAM,CAAC,EAAE,MAAM,CAAC;IAChB,SAAS,CAAC,EAAE,MAAM,CAAC;IACnB,WAAW,CAAC,EAAE,MAAM,CAAC;CACtB;AAED,wBAAgB,kBAAkB,CAChC,OAAO,GAAE,yBAA8B,GACtC,aAAa,CAmDf"}

@@ -1,0 +1,20 @@
+[role="tooltip"],
+[role="dialog"][data-state] {
+  position: absolute;
+  z-index: 10000;
+  width: max-content;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+[role="tooltip"] {
+  pointer-events: none;
+}
+
+[data-floating-scrim] {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgb(0 0 0 / 40%);
+}
