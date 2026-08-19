@@ -189,7 +189,36 @@ export default class Cookbook extends Component {
 
 // fill is an inherited SVG property, so setting it once on .tip reaches
 // the arrow automatically — no import needed for that either. Do not
-// set overflow: hidden on .tip or the arrow is clipped.`;
+// set overflow: hidden on .tip or the arrow is clipped.
+
+import Popover from 'floating-ember/components/popover';
+
+.panel {
+  /* One value each for background/fill and border/stroke, so the arrow
+     can't drift out of sync with the panel it's attached to. */
+  --panel-bg: #fff;
+  --panel-border: #ddd;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  fill: var(--panel-bg);
+  stroke: var(--panel-border);
+  color: #1c1915;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  padding: 1rem;
+  width: 14rem;
+}
+
+<Popover @arrow={{true}} @arrowStrokeWidth={{1}} @contentClass="panel">
+  <:trigger as |trigger|>
+    <button type="button">More</button>
+  </:trigger>
+  <:content>
+    <a href="/docs">Learn more</a>
+  </:content>
+</Popover>
+
+// Same --panel-bg/--panel-border pair feeds fill/stroke here too.`;
 
   recipeModifier = `import tooltip from 'floating-ember/modifiers/tooltip';
 
@@ -984,13 +1013,31 @@ import Popover from 'floating-ember/components/popover';
             @blurb="Write a class. Pass it as contentClass. Hard-coded colors — this one ignores the theme picker."
             @code={{this.recipePlain}}
           >
-            <button
-              type="button"
-              class="btn btn-sm"
-              {{tooltip "Save your changes" arrow=true contentClass="tip"}}
-            >
-              Save
-            </button>
+            <div class="flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="btn btn-sm"
+                {{tooltip "Save your changes" arrow=true contentClass="tip"}}
+              >
+                Save
+              </button>
+              <Popover
+                @arrow={{true}}
+                @arrowStrokeWidth={{1}}
+                @contentClass="panel"
+              >
+                <:trigger as |trigger|>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    {{trigger}}
+                  >More</button>
+                </:trigger>
+                <:content>
+                  <a href="/docs" class="text-sm">Learn more</a>
+                </:content>
+              </Popover>
+            </div>
           </CookbookSection>
 
           <CookbookSection
