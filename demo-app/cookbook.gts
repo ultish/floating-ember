@@ -386,7 +386,26 @@ export default class Cookbook extends Component {
   <:content>Same class on the named-block API</:content>
 </Tooltip>
 
-// contentClass is a string of utilities on the [role=tooltip] node.`;
+// contentClass is a string of utilities on the [role=tooltip] node.
+
+import Popover from 'floating-ember/components/popover';
+
+<Popover
+  @arrow={{true}}
+  @arrowStrokeWidth={{1}}
+  @contentClass="rounded-lg border border-slate-200 bg-white fill-white stroke-slate-200 p-4 shadow-lg w-56 text-slate-900"
+>
+  <:trigger as |trigger|>
+    <button type="button">More</button>
+  </:trigger>
+  <:content>
+    <a href="#" class="text-blue-600 underline">Docs</a>
+  </:content>
+</Popover>
+
+// border-slate-200 and stroke-slate-200 share one Tailwind token, so they
+// can't drift apart — same for bg-white/fill-white. No custom variable
+// needed here, the token name already is the shared value.`;
 
   recipeDaisy = `// In YOUR app — not a floating-ember dependency
 // app.css
@@ -1005,6 +1024,22 @@ export default class Cookbook extends Component {
                 </:trigger>
                 <:content>Same class on the named-block API</:content>
               </Tooltip>
+              <Popover
+                @arrow={{true}}
+                @arrowStrokeWidth={{1}}
+                @contentClass="rounded-lg border border-slate-200 bg-white fill-white stroke-slate-200 p-4 shadow-lg w-56 text-slate-900"
+              >
+                <:trigger as |trigger|>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    {{trigger}}
+                  >Popover</button>
+                </:trigger>
+                <:content>
+                  <a href="#" class="text-sm text-blue-600 underline">Docs</a>
+                </:content>
+              </Popover>
             </div>
           </CookbookSection>
 
