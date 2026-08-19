@@ -470,6 +470,53 @@ import Popover from 'floating-ember/components/popover';
 // custom variable needed, same idea as the Tailwind recipe above.
 // Switch data-theme on <html> — base-300 / base-content follow it.`;
 
+  recipeGlobal = `/* app.css — target the roles the addon renders, once,
+   instead of passing contentClass to every Tooltip/Popover. Works with
+   any of the three recipes above; this is the plain-CSS version. */
+[role="tooltip"] {
+  background: #1c1915;
+  fill: #1c1915;
+  color: #f4efe4;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  max-width: 16rem;
+}
+
+[role="dialog"][data-state] {
+  --panel-bg: #fff;
+  --panel-border: #ddd;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  fill: var(--panel-bg);
+  stroke: var(--panel-border);
+  color: #1c1915;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  padding: 1rem;
+  width: 14rem;
+}
+
+<button type="button" {{tooltip "Save your changes" arrow=true}}>
+  Save
+</button>
+
+<Popover @arrow={{true}} @arrowStrokeWidth={{1}}>
+  <:trigger as |trigger|>
+    <button type="button" {{trigger}}>More</button>
+  </:trigger>
+  <:content>
+    <a href="/docs">Learn more</a>
+  </:content>
+</Popover>
+
+// No contentClass on either one — every Tooltip/Popover/{{tooltip}} in
+// the app is styled by default now. Pass contentClass where one instance
+// needs to look different; it adds classes on top, it doesn't replace
+// this. @arrow/@arrowStrokeWidth stay per-component args, not CSS — an
+// arrow is still an opt-in on each instance you want one on.`;
+
   <template>
     <div class="min-h-screen bg-base-200 text-base-content">
       <header
@@ -989,6 +1036,12 @@ import Popover from 'floating-ember/components/popover';
                 <a href="#styling-daisy" class="link">DaisyUI</a>
                 — semantic tokens. Follows the theme picker. Optional.
               </li>
+              <li>
+                <a href="#styling-global" class="link">Style everything at once</a>
+                — skip
+                <code>contentClass</code>
+                entirely, target the roles the addon renders.
+              </li>
             </ul>
           </div>
 
@@ -1112,6 +1165,53 @@ import Popover from 'floating-ember/components/popover';
                 </:content>
               </Popover>
             </div>
+          </CookbookSection>
+
+          <CookbookSection
+            @id="styling-global"
+            @title="Style everything at once"
+            @blurb="Skip contentClass on every instance — target the roles the addon renders and every Tooltip/Popover in the app is styled by default."
+            @code={{this.recipeGlobal}}
+          >
+            <div class="global-demo flex flex-wrap gap-2">
+              <Tooltip @arrow={{true}} @renderInPlace={{true}}>
+                <:trigger as |trigger|>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    {{trigger}}
+                  >Save</button>
+                </:trigger>
+                <:content>Save your changes</:content>
+              </Tooltip>
+              <Popover
+                @arrow={{true}}
+                @arrowStrokeWidth={{1}}
+                @renderInPlace={{true}}
+              >
+                <:trigger as |trigger|>
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    {{trigger}}
+                  >More</button>
+                </:trigger>
+                <:content>
+                  <a href="/docs" class="text-sm">Learn more</a>
+                </:content>
+              </Popover>
+            </div>
+            <p class="text-xs opacity-60">
+              This demo uses
+              <code>@renderInPlace</code>
+              only so the styling stays scoped to this card instead of every
+              tooltip on the page. Your own app has no such conflict — the
+              modifier and both components portal to
+              <code>document.body</code>
+              by default, and the CSS above matches them there without needing
+              <code>@renderInPlace</code>
+              at all.
+            </p>
           </CookbookSection>
         </section>
 

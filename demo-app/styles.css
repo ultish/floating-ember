@@ -98,3 +98,35 @@ html[data-landing] [role="dialog"][data-state] button {
   padding: 1rem;
   width: 14rem;
 }
+
+/*
+ * "Style everything at once" recipe. Scoped to .global-demo (a wrapper
+ * around that one section's renderInPlace demo) so it doesn't restyle
+ * every other tooltip/popover on this page. In a real app there's no
+ * portal boundary to work around — these selectors would be unscoped,
+ * exactly as shown in that recipe's code sample.
+ */
+.global-demo [role="tooltip"] {
+  background: #1c1915;
+  fill: #1c1915;
+  color: #f4efe4;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  max-width: 16rem;
+}
+
+.global-demo [role="dialog"][data-state] {
+  --panel-bg: #fff;
+  --panel-border: #ddd;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  fill: var(--panel-bg);
+  stroke: var(--panel-border);
+  color: #1c1915;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  padding: 1rem;
+  width: 14rem;
+}
