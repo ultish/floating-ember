@@ -12,28 +12,6 @@
   pointer-events: none;
 }
 
-/*
- * The arrow is an SVG triangle (see -private/floating-arrow.gts), not a
- * rotated square — a straight CSS border can't be aligned pixel-perfectly
- * with a separately-rasterized rotated shape, which used to leave a
- * hairline gap where the panel's border showed through. Position (side
- * placement, rotation) is applied inline by position.ts on every reposition;
- * this stylesheet only owns paint.
- *
- * Browsers' built-in SVG stylesheet declares `fill`/`stroke` directly on
- * svg/path elements, and a declared value always wins over an inherited
- * one — so without this rule, setting `fill` on an ancestor (e.g. your
- * panel's class) would silently be ignored. `inherit` forces the arrow to
- * actually pick up its ancestor's `fill`/`stroke` (falling back to plain
- * black / no stroke, same as the SVG default, when nothing sets them).
- * Pass `@arrowStrokeWidth` (or `arrowStrokeWidth=`) matching the panel's
- * actual `border-width` so the geometry accounts for it.
- */
-[data-floating-arrow] {
-  fill: inherit;
-  stroke: inherit;
-}
-
 [data-floating-scrim] {
   position: fixed;
   inset: 0;

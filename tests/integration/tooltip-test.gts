@@ -263,4 +263,25 @@ module('Integration | Tooltip', function (hooks) {
     await openTooltip(document.querySelector('[data-test-trigger]')!);
     assert.dom('[data-floating-arrow]', document).exists();
   });
+
+  test('arrow paints without any stylesheet import', async function (assert) {
+    await render(
+      <template>
+        <Tooltip @arrow={{true}}>
+          <:trigger as |trigger|>
+            <button type="button" data-test-trigger {{trigger}}>Save</button>
+          </:trigger>
+          <:content>With arrow</:content>
+        </Tooltip>
+      </template>,
+    );
+
+    await openTooltip(document.querySelector('[data-test-trigger]')!);
+    const arrow = document.querySelector('[data-floating-arrow]');
+    assert.dom(arrow).hasAttribute('fill', 'inherit');
+    assert.dom(arrow).hasAttribute('stroke', 'inherit');
+    assert
+      .dom('[data-floating-arrow] path[stroke-width]', document)
+      .exists('default arrowStrokeWidth renders a stroke path');
+  });
 });

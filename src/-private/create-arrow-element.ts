@@ -18,7 +18,7 @@ export function createArrowElement(
     width: options.width ?? 14,
     height: options.height ?? 7,
     tipRadius: options.tipRadius ?? 0,
-    strokeWidth: options.strokeWidth ?? 0,
+    strokeWidth: options.strokeWidth ?? 1,
   });
 
   const svg = document.createElementNS(SVG_NS, 'svg');
@@ -28,6 +28,10 @@ export function createArrowElement(
   svg.setAttribute('width', String(geometry.svgWidth));
   svg.setAttribute('height', String(geometry.svgHeight));
   svg.setAttribute('viewBox', geometry.viewBox);
+  // See floating-arrow.gts for why these presentation attributes (not CSS)
+  // are what makes ancestor fill/stroke reach the arrow with zero imports.
+  svg.setAttribute('fill', 'inherit');
+  svg.setAttribute('stroke', 'inherit');
   svg.style.position = 'absolute';
   svg.style.pointerEvents = 'none';
 

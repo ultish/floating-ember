@@ -1091,10 +1091,12 @@ export default class Cookbook extends Component {
                 <tr>
                   <td><code>arrowStrokeWidth</code></td>
                   <td>both</td>
-                  <td>0</td>
+                  <td>1</td>
                   <td>Match the panel's
                     <code>border-width</code>
-                    so the stroke geometry lines up</td>
+                    so the stroke geometry lines up; pass
+                    <code>0</code>
+                    for a borderless arrow</td>
                 </tr>
                 <tr>
                   <td><code>renderInPlace</code></td>

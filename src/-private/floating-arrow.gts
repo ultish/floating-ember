@@ -28,7 +28,7 @@ export default class FloatingArrow extends Component<FloatingArrowSignature> {
   }
 
   get strokeWidth(): number {
-    return this.args.strokeWidth ?? 0;
+    return this.args.strokeWidth ?? 1;
   }
 
   get geometry() {
@@ -46,6 +46,11 @@ export default class FloatingArrow extends Component<FloatingArrowSignature> {
 
   <template>
     {{! template-lint-disable no-inline-styles }}
+    {{! fill/stroke="inherit": browsers' UA stylesheet paints svg/path
+        elements directly, which beats plain CSS inheritance from an
+        ancestor's fill/stroke — these presentation attributes force real
+        inheritance without requiring any stylesheet import, and still lose
+        to any author CSS rule targeting [data-floating-arrow] directly. }}
     <svg
       data-floating-arrow
       data-stroke-width={{this.geometry.computedStrokeWidth}}
@@ -53,6 +58,8 @@ export default class FloatingArrow extends Component<FloatingArrowSignature> {
       width={{this.geometry.svgWidth}}
       height={{this.geometry.svgHeight}}
       viewBox={{this.geometry.viewBox}}
+      fill="inherit"
+      stroke="inherit"
       style="position: absolute; pointer-events: none;"
       ...attributes
     >

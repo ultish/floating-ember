@@ -99,10 +99,10 @@ The cookbook at the demo app has a **Styling** section with live recipes for all
 
 The arrow is an SVG triangle, not a CSS-rotated square — `fill` and `stroke`
 are inherited SVG properties, so setting them once on the panel's class (or
-directly on `[data-floating-arrow]`) reaches the arrow automatically. If the
-panel has a `border`, pass `@arrowStrokeWidth` matching its px width so the
-arrow's stroke geometry accounts for it — otherwise the arrow won't sit
-flush with the border.
+directly on `[data-floating-arrow]`) reaches the arrow automatically, with
+no stylesheet import needed for that. `@arrowStrokeWidth` defaults to `1`;
+pass `0` for a borderless arrow, or match it to the panel's `border` width
+so the arrow's stroke geometry sits flush with the border.
 
 ## Accessibility
 
