@@ -298,10 +298,14 @@ export default class Cookbook extends Component {
 /* app.css — you write this, same as the tooltip's .tip. Reused by every
    Popover recipe below. */
 .panel {
-  background: #fff;
-  border: 1px solid #ddd;
-  fill: #fff; /* arrow color — matches the panel's own background */
-  stroke: #ddd; /* arrow border — matches the panel's own border */
+  /* One value each for background/fill and border/stroke, so the arrow
+     can't drift out of sync with the panel it's attached to. */
+  --panel-bg: #fff;
+  --panel-border: #ddd;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  fill: var(--panel-bg);
+  stroke: var(--panel-border);
   color: #1c1915;
   border-radius: 8px;
   box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
@@ -399,6 +403,24 @@ export default class Cookbook extends Component {
 >
   Save
 </button>
+
+/* One DaisyUI-derived variable feeds both the panel's border and the
+   arrow's stroke — same idea as the plain-CSS .panel above, just sourced
+   from a theme token instead of a literal so it restyles with the theme. */
+:root {
+  --floating-panel-border: color-mix(
+    in oklab,
+    var(--color-base-content) 20%,
+    transparent
+  );
+}
+.floating-panel {
+  border: 1px solid var(--floating-panel-border);
+}
+.floating-panel [data-floating-arrow] {
+  fill: var(--color-base-100);
+  stroke: var(--floating-panel-border);
+}
 
 <Popover
   @arrow={{true}}
