@@ -295,6 +295,20 @@ export default class Cookbook extends Component {
 
   recipePopover = `import Popover from 'floating-ember/components/popover';
 
+/* app.css — you write this, same as the tooltip's .tip. Reused by every
+   Popover recipe below. */
+.panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  fill: #fff; /* arrow color — matches the panel's own background */
+  stroke: #ddd; /* arrow border — matches the panel's own border */
+  color: #1c1915;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+  padding: 1rem;
+  width: 14rem;
+}
+
 <Popover @placement="bottom-start" @contentClass="panel">
   <:trigger as |trigger|>
     <button type="button" {{trigger}}>More</button>
@@ -323,7 +337,8 @@ export default class Cookbook extends Component {
 </Popover>
 
 // Escape, the scrim, and click-outside all close. Skip the import
-// if you never use @modal — or style [data-floating-scrim] yourself.`;
+// if you never use @modal — or style [data-floating-scrim] yourself.
+// .panel is the same class defined in the Popover recipe above.`;
 
   recipePopoverOptions = `<Popover
   @placement={{this.placement}}
@@ -339,7 +354,8 @@ export default class Cookbook extends Component {
 </Popover>
 
 // @arrowStrokeWidth matches "panel"'s 1px border — omit it (or set 0)
-// for a borderless panel, otherwise the arrow won't sit flush.`;
+// for a borderless panel, otherwise the arrow won't sit flush.
+// .panel is the same class defined in the Popover recipe above.`;
 
   recipeTailwind = `// In YOUR app — not a floating-ember dependency
 // app.css
