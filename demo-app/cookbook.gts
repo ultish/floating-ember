@@ -913,7 +913,9 @@ export default class Cookbook extends Component {
               <code>fill</code>/<code>stroke</code>
               on
               <code>[data-floating-arrow]</code>
-              are all it takes to match. The optional
+              — set to the same colors as your panel's background and border —
+              are all it takes to match. The addon does not tie those colors
+              together for you. The optional
               <code>floating-ember/styles/floating.css</code>
               import is only for
               <a href="#popover-modal" class="link">modal</a>'s scrim.
